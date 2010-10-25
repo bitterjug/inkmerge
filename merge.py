@@ -13,7 +13,6 @@ from collections import defaultdict
 #sys.path.append('/Applications/Inkscape.app/Contents/Resources/extensions')
 import inkex
 
-#TODO export to pdf using inkscape bulit-in function
 # suggest leave other formats to use of a tool like imagemagick rather than  
 # make this plugin depend on that.
 
@@ -21,6 +20,9 @@ absref = u'{%s}absref'  % inkex.NSS['sodipodi']
 absrefpath='//@sodipodi:absref'
 href = u'{%s}href'  % inkex.NSS['xlink']
 hrefpath='//@xlink:href'
+
+DEFAULT_FORMAT='svg'
+DEFAULT_DPI='96'
 
 class Merger(inkex.Effect):
     """ Mail-merge effect class"""
@@ -32,13 +34,13 @@ class Merger(inkex.Effect):
         # Define  options
         self.OptionParser.add_option('--extra-vars', action = 'store', type = 'string', dest = 'extraVars', default = '')
         self.OptionParser.add_option('--data-file', action = 'store', type = 'string', dest = 'dataFile' )
-        self.OptionParser.add_option('--format', action = 'store', type = 'string', dest = 'outputFormat', default = 'svg' ) 
+        self.OptionParser.add_option('--format', action = 'store', type = 'string', dest = 'outputFormat', default = DEFAULT_FORMAT ) 
         self.OptionParser.add_option('--output', action = 'store', type = 'string', dest = 'outputPattern', default = None )
         self.OptionParser.add_option('--tab', action="store", type="string", dest="tab", help="The selected UI-tab when OK was pressed") 
         self.OptionParser.add_option('--var-template', action="store", type="string", dest="varTemplate", default = '%%VAR_%s%%')
         self.OptionParser.add_option('--pair-separator', action="store", type="string", dest="pairSep", default = "=>")
         self.OptionParser.add_option('--var-separator', action="store", type="string", dest="varSep", default = "|")
-        self.OptionParser.add_option('--dpi', action="store", type="int", dest="dpi", default = "96")
+        self.OptionParser.add_option('--dpi', action="store", type="int", dest="dpi", default = DEFAULT_DPI)
         self.texts = None
 
     def replaceText(self, document, old, new):
@@ -158,17 +160,28 @@ class Merger(inkex.Effect):
         for row in self.getData():
             self.process(row)
 
-    def invoke(self, template, data_file, output_file_pattern='$file', var_template='$%s'):
+    def invoke(self, 
+            template, 
+            data_file, 
+            output_file_pattern='$file', 
+            var_template='$%s',
+            output_format=DEFAULT_FORMAT,
+            dpi=DEFAULT_DPI,
+            ):
         """ Invoke the merge proecss from python passing arguments directly
 
         :param template Path to template svg file
         :param data_file Path to the data file 
         :param output_file_pattern with %s standing for column header value
+        :param output_format output format 'svg' or 'pdf', default=svg
+        :param dpi dpi for embedded images, 
 
         """
         args=['--data-file=%s' % data_file, 
               '--output=%s' % output_file_pattern, 
               '--var-template=%s' % var_template,
+              '--format=%s' % output_format,
+              '--dpi=%s'% dpi,
               template
               ]
         self.affect(args=args,output=False)
