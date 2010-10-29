@@ -7,6 +7,7 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="744.09448819"
@@ -14,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.0 r9654"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="simple-template.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -24,14 +25,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.35"
-     inkscape:cx="345"
-     inkscape:cy="497.14286"
+     inkscape:zoom="2.8366579"
+     inkscape:cx="372.85715"
+     inkscape:cy="874.28571"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1280"
-     inkscape:window-height="973"
+     inkscape:window-height="749"
      inkscape:window-x="0"
      inkscape:window-y="24"
      inkscape:window-maximized="1" />
@@ -43,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -69,5 +70,20 @@
            height="128.57143"
            x="214.28572"
            y="109.50504" /></flowRegion><flowPara
-         id="flowPara2993">$test</flowPara></flowRoot>  </g>
+         id="flowPara2993">$test</flowPara></flowRoot>    <rect
+       style="opacity:0.62351846;color:#000000;fill:#00ac00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.79299998;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect2992"
+       width="2.8571429"
+       height="11.428572"
+       x="-245.71428"
+       y="846.64789" />
+    <image
+       sodipodi:absref="/home/mark/Documents/Aptivate/scorecards/dev/reactionscorecards2/lib/inkmerge/fixtures/$image.png"
+       xlink:href="$image.png"
+       y="103.71934"
+       x="362"
+       id="image3090"
+       height="128.71428"
+       width="161.71428" />
+  </g>
 </svg>
