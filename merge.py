@@ -3,9 +3,9 @@
 #TODO put all dependencies, including imported modules,into the .inx file.
 # These two lines are needed if you don't put the script directly into
 # the installation directory
-#from __future__ import with_statement
+from __future__ import with_statement
 import  csv, os, tempfile, subprocess
-#from contextlib import closing
+from contextlib import closing
 from copy import deepcopy
 from collections import defaultdict
 
@@ -83,10 +83,9 @@ class Merger(inkex.Effect):
         else:
             tmpFD, tempFileName = tempfile.mkstemp(suffix='.svg')
             try:
-                tmpFile = os.fdopen(tmpFD, "w+b")
-                document.write(tmpFile)
+                with closing(os.fdopen(tmpFD, "w+b")) as tmpFile:
+                    document.write(tmpFile)
                 self.formatOutput(tempFileName)
-                tmpFile.close()
             finally:
                 os.unlink(tempFileName)
 
