@@ -3,7 +3,7 @@
 #TODO put all dependencies, including imported modules,into the .inx file.
 # These two lines are needed if you don't put the script directly into
 # the installation directory
-from __future__ import with_statement
+#from __future__ import with_statement
 import  csv, os, tempfile, subprocess
 #from contextlib import closing
 from copy import deepcopy
