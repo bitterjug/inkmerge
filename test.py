@@ -3,6 +3,10 @@ from merge import Merger
 import os
 
 class test_invoke_merge(unittest.TestCase):
+
+    def test_fail(self):
+        print "foo"
+        self.assertTrue(False)
     
     def test_inkvok(self):
         """ invoking the plugin with a template a data file from the 
