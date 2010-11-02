@@ -5,7 +5,7 @@
 # the installation directory
 from __future__ import with_statement
 import  csv, os, tempfile, subprocess
-from contextlib import closing
+#from contextlib import closing
 from copy import deepcopy
 from collections import defaultdict
 
@@ -83,9 +83,10 @@ class Merger(inkex.Effect):
         else:
             tmpFD, tempFileName = tempfile.mkstemp(suffix='.svg')
             try:
-                with closing(os.fdopen(tmpFD, "w+b")) as tmpFile:
-                    document.write(tmpFile)
+                tmpFile = os.fdopen(tmpFD, "w+b")
+                document.write(tmpFile)
                 self.formatOutput(tempFileName)
+                tmpFile.close()
             finally:
                 os.unlink(tempFileName)
 
