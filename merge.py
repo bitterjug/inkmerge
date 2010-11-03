@@ -23,7 +23,7 @@ hrefpath='//@xlink:href'
 
 DEFAULT_FORMAT='svg'
 DEFAULT_DPI='96'
-
+UTF8='utf-8'
 class Merger(inkex.Effect):
     """ Mail-merge effect class"""
     def __init__(self):
@@ -137,6 +137,9 @@ class Merger(inkex.Effect):
         newDoc = deepcopy(self.document)
         col = 0 #FIXME consider the error case where the field names row has fewer columns than the data rows
         for datum in row:
+            # remove control characters
+            # datum = "".join([c for c in datum if ord(c) >= 32 ])
+            datum = unicode(datum, UTF8)
             for field in self.fields(col):
                 self.replaceText(newDoc, field, datum)
                 self.replaceImages(newDoc, field, datum)
