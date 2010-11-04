@@ -20,7 +20,7 @@ absref = u'{%s}absref'  % inkex.NSS['sodipodi']
 absrefpath='//@sodipodi:absref'
 href = u'{%s}href'  % inkex.NSS['xlink']
 hrefpath='//@xlink:href'
-
+DEFAULT_TEMPLATE='$%s$'
 DEFAULT_FORMAT='svg'
 DEFAULT_DPI='96'
 UTF8='utf-8'
@@ -37,7 +37,7 @@ class Merger(inkex.Effect):
         self.OptionParser.add_option('--format', action = 'store', type = 'string', dest = 'outputFormat', default = DEFAULT_FORMAT ) 
         self.OptionParser.add_option('--output', action = 'store', type = 'string', dest = 'outputPattern', default = None )
         self.OptionParser.add_option('--tab', action="store", type="string", dest="tab", help="The selected UI-tab when OK was pressed") 
-        self.OptionParser.add_option('--var-template', action="store", type="string", dest="varTemplate", default = '%%VAR_%s%%')
+        self.OptionParser.add_option('--var-template', action="store", type="string", dest="varTemplate", default = DEFAULT_TEMPLATE)
         self.OptionParser.add_option('--pair-separator', action="store", type="string", dest="pairSep", default = "=>")
         self.OptionParser.add_option('--var-separator', action="store", type="string", dest="varSep", default = "|")
         self.OptionParser.add_option('--dpi', action="store", type="int", dest="dpi", default = DEFAULT_DPI)
@@ -167,7 +167,7 @@ class Merger(inkex.Effect):
             template, 
             data_file, 
             output_file_pattern='$file', 
-            var_template='$%s',
+            var_template=DEFAULT_TEMPLATE,
             output_format=DEFAULT_FORMAT,
             dpi=DEFAULT_DPI,
             ):
