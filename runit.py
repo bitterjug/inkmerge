@@ -3,7 +3,7 @@ import os
 
 template= 'fixtures/simple-template.svg'
 datafile= 'fixtures/testdata.csv'
-output_pattern= '/tmp/$file'
+output_pattern= '/tmp/$file$'
 expected=  '/tmp/helloworld.svg'
 if os.path.exists(expected):
     os.remove(expected)
