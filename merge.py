@@ -49,8 +49,9 @@ class Merger(inkex.Effect):
         for e in textElements:
             parent = e.getparent()
             t = parent.text
-            t2 = t.replace(old, new)
-            parent.text = t2
+            if t != None:
+                t2 = t.replace(old, new)
+                parent.text = t2
 
     def replaceInAtt(self, node, fr, to, key):
         """ helper for replaceImages: """
