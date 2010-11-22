@@ -9,6 +9,7 @@ from contextlib import closing
 from copy import deepcopy
 from collections import defaultdict
 
+#FIXME: looks like the string substitution on images is happening even to the  data body of embedded images. 
 #TODO mac only?
 #sys.path.append('/Applications/Inkscape.app/Contents/Resources/extensions')
 import inkex
@@ -54,15 +55,28 @@ class Merger(inkex.Effect):
                 parent.text = t2
 
     def replaceInAtt(self, node, fr, to, key):
-        """ helper for replaceImages: """
+        """ helper for replacing in attributes: """
         node.set(key, node.get(key).replace(fr, to))
+
+    def replaceInImage(self, node, fr, to, key):
+        """ helper for replacing in images, 
+        removes full absolute path prefix from image name 
+        """
+        oldpath = node.get(key)
+        newpath = oldpath.replace(fr, to)
+        if oldpath != newpath:
+            if os.path.isabs(newpath):
+                newpath = os.path.basename(newpath)
+            # print "old [%s] new [%s]" % (oldpath, newpath)
+        node.set(key, newpath)
+
 
     def replaceImages(self, document, old, new):
         """ Replace in sodipodi:absref and xlink:href image names"""
         for attribute in document.xpath(absrefpath, namespaces=inkex.NSS):
-            self.replaceInAtt(attribute.getparent(), old, new, absref)
+            self.replaceInImage(attribute.getparent(), old, new, absref)
         for attribute in document.xpath(hrefpath, namespaces=inkex.NSS):
-            self.replaceInAtt(attribute.getparent(), old, new, href)
+            self.replaceInImage(attribute.getparent(), old, new, href)
 
     def replaceStyles(self, document, old, new):
         """ Replace in any style tag"""
