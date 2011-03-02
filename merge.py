@@ -95,9 +95,10 @@ class Merger(inkex.Effect):
 
     def save(self,document):
         """ Save the given document to a temporary svg file"""
+        currentFileName = None
         if self.options.outputFormat == 'svg':
-            outFileName = self.fixExtension(self.outputFileName, ".svg")
-            outFile = open(outFileName,'w')
+            currentFileName = self.fixExtension(self.outputFileName, ".svg")
+            outFile = open(currentFileName,'w')
             document.write(outFile)
             outFile.close()
         else:
@@ -105,16 +106,17 @@ class Merger(inkex.Effect):
             try:
                 with closing(os.fdopen(tmpFD, "w+b")) as tmpFile:
                     document.write(tmpFile)
-                self.formatOutput(tempFileName)
+                currentFileName = self.formatOutput(tempFileName)
             finally:
                 os.unlink(tempFileName)
-        self.messages.append("Generated " + outFileName)
+        self.messages.append("Generated " + currentFileName.rpartition('/')[2])
 
     def formatOutput(self, inputFile):
         """ convert temporary output file to the correct format"""
         format = self.options.outputFormat
-        outputFile = self.fixExtension(self.outputFileName, "." + self.options.outputFormat)
-        exportOption = '--export-%s=%s'  % (format, outputFile)
+        currentFileName = self.fixExtension(self.outputFileName,
+            "." + self.options.outputFormat)
+        exportOption = '--export-%s=%s'  % (format, currentFileName)
         dpiOption = '--export-dpi=%s' % self.options.dpi
         command = ['inkscape', '--without-gui', exportOption, dpiOption, inputFile]
         inkscape_output = Popen(command, shell=False, stdout=subprocess.PIPE,
@@ -122,6 +124,7 @@ class Merger(inkex.Effect):
         if (inkscape_output != ""):
             self.messages.append("Inkscape output: " + inkscape_output)
         #TODO use check_call to check for errors ?? inkscape doesn't seem to return != 0 even when,e.g. the input file is not there
+        return currentFileName
 
     def replaceInOutputPattern(self, field, val):
         """ do the field substitution in the output file name pattern """
