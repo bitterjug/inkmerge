@@ -8,6 +8,7 @@ import  csv, os, tempfile, subprocess
 from contextlib import closing
 from copy import deepcopy
 from collections import defaultdict
+from subprocess import Popen, PIPE, STDOUT
 
 #FIXME: looks like the string substitution on images is happening even to the  data body of embedded images. 
 #TODO mac only?
@@ -27,6 +28,7 @@ DEFAULT_DPI='96'
 UTF8='utf-8'
 class Merger(inkex.Effect):
     """ Mail-merge effect class"""
+    
     def __init__(self):
         """ Set up input parameters """
         # Call the base class constructor.kkkk
@@ -43,6 +45,7 @@ class Merger(inkex.Effect):
         self.OptionParser.add_option('--var-separator', action="store", type="string", dest="varSep", default = "|")
         self.OptionParser.add_option('--dpi', action="store", type="int", dest="dpi", default = DEFAULT_DPI)
         self.texts = None
+        self.messages = []
 
     def replaceText(self, document, old, new):
         """ Traverse the whole tree and replace all occurrences of old with new"""
@@ -105,6 +108,7 @@ class Merger(inkex.Effect):
                 self.formatOutput(tempFileName)
             finally:
                 os.unlink(tempFileName)
+        self.messages.append("Generated " + outFileName)
 
     def formatOutput(self, inputFile):
         """ convert temporary output file to the correct format"""
@@ -113,7 +117,10 @@ class Merger(inkex.Effect):
         exportOption = '--export-%s=%s'  % (format, outputFile)
         dpiOption = '--export-dpi=%s' % self.options.dpi
         command = ['inkscape', '--without-gui', exportOption, dpiOption, inputFile]
-        subprocess.call(command, shell=False)
+        inkscape_output = Popen(command, shell=False, stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT).communicate()[0]
+        if (inkscape_output != ""):
+            self.messages.append("Inkscape output: " + inkscape_output)
         #TODO use check_call to check for errors ?? inkscape doesn't seem to return != 0 even when,e.g. the input file is not there
 
     def replaceInOutputPattern(self, field, val):
@@ -188,7 +195,7 @@ class Merger(inkex.Effect):
             output_format=DEFAULT_FORMAT,
             dpi=DEFAULT_DPI,
             ):
-        """ Invoke the merge proecss from python passing arguments directly
+        """ Invoke the merge process from python passing arguments directly
 
         :param template Path to template svg file
         :param data_file Path to the data file 
