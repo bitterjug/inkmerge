@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- inkscape-extension xmlns="http://www.inkscape.org/namespace/inkscape/extension" -->
+<inkscape-extension>
+
+  <_name>Mail Merge</_name>
+  <id>com.bitterjug.inkmerge</id>
+
+  <dependency type="executable" location="extensions">merge.py</dependency>
+
+  <param name="tab" type="notebook">
+    <page name="tabI" _gui-text="Input">
+      <param name="data-file" type="string" _gui-text="Data file:">$HOME/.../data.csv</param>
+      <_param name="extraVarInfo" type="description">The data file must be a comma separated value (CSV) file, with the column titles in the first row.</_param>
+    </page>
+    <page name="tabO" _gui-text="Output">
+      <param name="format" type="enum" _gui-text="Output format:">
+        <item>pdf</item>
+        <item>png</item>
+        <item>ps</item>
+        <item>eps</item>
+        <item>svg</item>
+      </param>
+      <param name="output" type="string" _gui-text="Output file-name">$HOME/.../%VAR_file%.svg</param>
+      <_param name="info3" type="description">The output file-name should include a variable pattern in order to save each output image in a separate file.</_param>
+      <param name="dpi" type="string" _gui-text="DPI (for .bitmap files):">90</param>
+    </page>
+    <page name="tabA" _gui-text="Merge">
+      <_param name="info1" type="description">Extra text patterns to be replaced:</_param>
+      <param name="extra-vars" type="string" gui-text=" "></param>
+      <_param name="info2" type="description">e.g. '#000000=>background|#ffffff=>foreground' to replace all occurrences of the black ('#000000') in your drawing with the contents of the 'background' column in your data, and to replace white ('#ffffff') with the contents of the 'foreground' column.
+Use  '|' to separate patterns and '=>' to separate the text to be replaced from the data column name.
+Do not use spaces unless they are part of the text pattern.
+You can change these separator values on the advanced tab.</_param>
+    </page>
+    <page name="tabA" _gui-text="Advanced">
+      <param name="var-template" type="string" gui-text="Variable template">%%VAR_%s%%</param>
+      <_param name="info1" type="description">How the column titles in your CSV file relate to variables to replace in the drawing. To get the 
+%s -- replaced by the column title
+%% -- becomes a single %</_param>
+      <param name="var-separator" type="string" gui-text="Replace-text separator (default: '|')">|</param>
+      <param name="pair-separator" type="string" gui-text="Text pattern separator (default: '=>')">=></param>
+
+    </page>
+    <page name="tabD" _gui-text="Help">
+
+      <_param name="helpTxt" type="description">Column names in the spreadsheet become field names according to the Variable Template in the Advanced tab.
+Every occurrence of the field name in your svg is replaced with the contents of data for that column in the current row.
+      </_param>
+
+    </page>
+  </param>
+
+  <effect>
+    <object-type>all</object-type>
+    <effects-menu>
+      <submenu _name="Misc"/>
+    </effects-menu>
+  </effect>
+
+  <script>
+      <command reldir="extensions" interpreter="python">merge.py</command>
+  </script>
+
+</inkscape-extension>
