@@ -16,6 +16,7 @@ Installing
 ----------
 
 Follow [instructions from inkscape][5]: copy the files in `extensions`
-to your `$HOME/config/inkscape/extensions`.
+to your `$HOME/config/inkscape/extensions` (linux)
+or `~/.config/inkscape/extensions` (mac)
 
 [5]: http://wiki.inkscape.org/wiki/index.php/Script_extensions#Installing
