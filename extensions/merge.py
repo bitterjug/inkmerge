@@ -62,15 +62,11 @@ class Merger(inkex.Effect):
         node.set(key, node.get(key).replace(fr, to))
 
     def replaceInImage(self, node, fr, to, key):
-        """ helper for replacing in images, 
-        removes full absolute path prefix from image name 
-        """
+        """ helper for replacing in images """
         oldpath = node.get(key)
         newpath = oldpath.replace(fr, to)
-        if oldpath != newpath:
-            if os.path.isabs(newpath):
-                newpath = os.path.basename(newpath)
-            # print "old [%s] new [%s]" % (oldpath, newpath)
+        # message = "old [%s] new [%s]" % (oldpath, newpath)
+        # inkex.debug(message)
         node.set(key, newpath)
 
 
@@ -219,4 +215,3 @@ class Merger(inkex.Effect):
 if __name__ == "__main__":
     # Create effect instance and apply it.
     Merger().affect()
-
